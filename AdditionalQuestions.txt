@@ -1,0 +1,139 @@
+● What instrumentation this service would need to ensure its observability and operational
+transparency?
+answer: 
+  To ensure observability and operational transparency in the DNS service, you should implement the following instrumentation techniques:
+
+    Logging: Implement detailed logging to capture events, errors, and request/response information for troubleshooting and monitoring.
+
+    Metrics Collection: Collect and expose important performance metrics and operational statistics, such as request latency, response codes, error rates, and resource utilization.
+
+    Distributed Tracing: Incorporate distributed tracing to capture end-to-end request flows and analyze latency and interactions between components.
+
+    Health Checks: Implement health checks to verify the availability and responsiveness of the service.
+
+    Error Monitoring: Utilize an error monitoring solution to capture and track application errors.
+
+    Alerting and Notifications: Configure alerts and notifications based on predefined thresholds or anomalies in metrics, traces, or error rates.
+
+    Centralized Log Aggregation: Stream application logs to a centralized log management system for easy searching, analysis, and troubleshooting.
+
+    Dashboard and Visualization: Create dashboards and visualizations to provide real-time insights into system performance and metrics.
+
+    Configuration Management: Implement a robust configuration management system to manage environment-specific configurations.
+
+    Audit Trail: Record important actions and events performed within the DNS service to establish an audit trail.
+
+  By implementing these techniques, you can enhance the observability and operational transparency of the DNS service, facilitating effective monitoring, troubleshooting, and continuous improvement.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+● Why throttling is useful (if it is)? How would you implement it here?
+answer:
+
+Throttling is useful in many scenarios to control the rate of incoming requests and prevent overload or abuse of resources. In the context of a DNS service, throttling can be beneficial for the following reasons:
+
+    Resource Management: Throttling helps manage and allocate resources effectively by limiting the number of requests processed simultaneously. It prevents overwhelming the DNS server and ensures fair resource distribution among clients.
+
+    Protection against Abuse: Throttling can protect the DNS service from abusive or malicious clients by limiting the rate at which they can send requests. This helps prevent Denial-of-Service (DoS) attacks and ensures the service remains available to legitimate users.
+
+    Performance Optimization: By controlling the request rate, throttling can prevent excessive load on backend systems or external dependencies, improving overall performance and stability.
+
+To implement throttling in the DNS service, you can consider the following approach:
+
+    Determine Throttling Policy: Define the throttling policy based on your requirements. This includes factors such as the maximum request rate per client, the duration of throttling, and any exceptions or special handling for certain requests.
+
+    Identify Clients: Determine how you will identify clients making requests. This can be based on IP addresses, authentication tokens, or any other identifying information available in the request.
+
+    Track Request Rates: Implement a mechanism to track the request rate for each client. This can be done by maintaining a sliding time window that records the number of requests made by each client within a specific period.
+
+    Enforce Throttling: Compare the request rate for each client against the defined throttling policy. If a client exceeds the allowed rate, reject or delay their requests, indicating that they are being throttled. You can use techniques like request queuing, delaying responses, or returning specific error codes to handle throttled requests.
+
+    Handle Exceptions: Consider any exceptions to the throttling policy, such as allowing certain clients to exceed the normal rate temporarily or exempting specific types of requests from throttling. Implement logic to handle these exceptions based on your specific requirements.
+
+    Monitor and Adjust: Continuously monitor the effectiveness of the throttling mechanism and adjust the throttling policy if necessary. Regularly analyze the request rate, identify any emerging patterns or anomalies, and make adjustments to optimize performance and resource allocation.
+
+Throttling can be implemented within the DNS service itself or at the network infrastructure level using tools like load balancers or API gateways. The specific implementation details will depend on your technology stack, architecture, and the requirements of your DNS service.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+● What we have to change to make DNS be able to service several sectors at the same
+time?
+Answer: 
+  To make the Drone Navigation System able to service several sectors at the same time, you would need to make the following changes:
+
+    Sector Identification: Modify the system to handle multiple SectorIDs instead of considering it as a constant. Update the data model and logic to associate each request with the appropriate SectorID.
+
+    DNS Request: Enhance the DNS request payload to include the SectorID as a parameter, allowing clients to specify the sector for which they are requesting navigation.
+
+    Complex Math Calculation: Update the complex math calculation to consider the SectorID associated with each request. Adjust the calculation logic to perform the necessary computations based on the provided SectorID and the corresponding coordinates and velocity.
+
+    DNS Response: Extend the DNS response to include the calculated location (loc) for the specific sector. Instead of returning a single location, the response should include multiple location values corresponding to each sector requested.
+
+    Scaling and Resource Management: Ensure that the system is designed to handle concurrent requests and manage resources efficiently. Consider load balancing techniques, distributed processing, and scaling strategies to support multiple sectors simultaneously without compromising performance.
+
+By implementing these changes, the Drone Navigation System will be capable of servicing several sectors at the same time by considering the SectorID associated with each request and calculating the location accordingly.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+● Our CEO wants to establish B2B integration with Mom's Friendly Robot Company by
+allowing cargo ships of MomCorp to use DNS. The only issue is - MomCorp software
+expects loc value in location field, but math stays the same. How would you
+approach this? What’s would be your implementation strategy?
+
+answer:
+To address the requirement of establishing B2B integration with Mom's Friendly Robot Company, while accommodating the difference in the expected location field, you can follow this implementation strategy:
+
+    Coordinate with Mom's Friendly Robot Company: Engage in discussions with Mom's Friendly Robot Company to understand their requirements and the specific format they expect for the location field. Collaborate on finding a mutually agreed-upon solution that aligns with their software's expectations.
+
+    Update DNS Request and Response Structure: Modify the DNS request and response structure to include both the "loc" field and the desired "location" field. This allows for compatibility with both Mom's Friendly Robot Company and any existing clients that rely on the "loc" field.
+
+    Conversion Logic: Implement conversion logic to transform the calculated "loc" value into the desired format for the "location" field. This conversion should be applied when generating the DNS response specifically for Mom's Friendly Robot Company. The mathematical calculation logic remains unchanged.
+
+    Conditional Response Formatting: Within the DNS request handler, identify requests coming from Mom's Friendly Robot Company based on specific attributes or identifiers. When handling requests from Mom's Friendly Robot Company, format the DNS response to include the converted "location" field while still including the original "loc" field for backward compatibility.
+
+    Documentation and Communication: Clearly document the integration requirements and the modified request/response structure in the API documentation or any relevant communication channels. This ensures that both Mom's Friendly Robot Company and other clients are aware of the differences in the response format and can handle it accordingly.
+
+    Testing and Validation: Develop comprehensive test cases to validate the integration with Mom's Friendly Robot Company. Ensure that the converted "location" field meets their expectations and that other existing clients can continue to interpret the "loc" field correctly.
+
+By adopting this approach, you can accommodate the requirement of integrating with Mom's Friendly Robot Company while still maintaining compatibility with other clients. The key lies in implementing conditional formatting based on the client's identification and employing conversion logic to transform the calculated "loc" value into the desired format for the "location" field specific to Mom's Friendly Robot Company.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+● Atlas Corp mathematicians made another breakthrough and now our navigation math is
+even better and more accurate, so we started producing a new drone model, based on
+new math. How would you enable scenario where DNS can serve both types of clients?
+
+answer: 
+  To enable a scenario where the Drone Navigation System can serve both types of clients with different navigation math, you can follow this approach:
+
+    Update API and Payload: Modify the API of the Drone Navigation System to accommodate the new math model. Introduce a versioning mechanism or an additional parameter in the request payload to indicate the client's preferred math model.
+
+    Math Calculation: Implement both the existing math model and the new, more accurate math model in the Drone Navigation System. Based on the version or parameter provided in the request, select the appropriate math model for navigation calculations.
+
+    Conditional Logic: Within the Drone Navigation System, identify the client type or version based on the provided parameter or through API versioning. Use conditional logic to determine which math model to apply for the specific client's request.
+
+    Response Formatting: Generate the response based on the selected math model and format it accordingly. Ensure that the response includes the appropriate location information calculated using the chosen math model.
+
+    Documentation and Communication: Clearly document the availability of multiple math models and the mechanism to select them in the API documentation and any relevant communication channels. Inform clients about the parameter or versioning approach for specifying their preferred math model.
+
+    Testing and Validation: Develop comprehensive test cases to validate the Drone Navigation System's ability to handle both math models and produce accurate results. Verify that the responses are correctly calculated based on the selected math model.
+
+By implementing this approach, the Drone Navigation System can serve both types of clients with different math models. The key lies in updating the API, implementing conditional logic for math model selection, and properly documenting the available math models and the mechanism for client preference.
+
+● In general, how would you separate technical decision to deploy something from
+business decision to release something?
+
+answer:
+  In general, the separation between technical decision to deploy something and business decision to release something can be approached as follows:
+
+    Technical Decision to Deploy: The technical decision to deploy something focuses on the technical aspects of the deployment process. It involves considerations such as infrastructure requirements, software dependencies, compatibility, security, scalability, and performance. Technical experts, such as developers, DevOps engineers, and system administrators, make these decisions based on their expertise and the technical requirements of the application or system.
+
+    Business Decision to Release: The business decision to release something relates to the timing and readiness of a product or feature for the market or end-users. It involves considerations such as market demand, customer needs, competitive landscape, marketing strategy, and business objectives. Business stakeholders, including product managers, marketing teams, and executives, make these decisions based on market analysis, customer feedback, business goals, and strategic planning.
+
+    Collaboration and Alignment: While technical and business decisions have their respective focuses, it is essential to foster collaboration and alignment between the technical and business teams. Close collaboration ensures that technical decisions are informed by business goals and requirements, and business decisions consider technical constraints and capabilities. Regular communication, cross-functional meetings, and shared understanding between the teams are crucial for successful product development and release.
+
+    Iterative and Agile Approach: Adopting an iterative and agile approach allows for frequent feedback loops and iterative development cycles. This enables both technical and business decisions to evolve over time based on feedback, market dynamics, and technological advancements. The iterative approach allows for continuous improvement, adaptability, and responsiveness to changing needs and circumstances.
+
+By separating the technical decision to deploy from the business decision to release, organizations can ensure that technical aspects and business considerations are addressed appropriately. Collaboration and alignment between technical and business teams, along with an iterative approach, help facilitate successful deployments and releases that meet both technical requirements and business objectives.
