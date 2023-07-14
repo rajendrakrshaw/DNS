@@ -11,8 +11,8 @@ This is a DNS server that performs complex math calculations based on the provid
 
 1. Clone the repository:
 ```
-  git clone https://github.com/your-username/dns-server.git
-  cd dns-server
+  git clone https://github.com/your-username/DNS.git
+  cd DNS
 ```
 2. Install the dependencies:
 ```
