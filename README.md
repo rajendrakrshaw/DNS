@@ -21,11 +21,17 @@ This is a DNS server that performs complex math calculations based on the provid
 
 ## Usage
 
-1. Start the DNS server:
+1. Configure the environment:
+```
+  #got to .env file
+  set value of SECTOR_ID
+```
+
+2. Start the DNS server:
 ```
   python main.py
 ```
-2. Send a DNS request using curl or any HTTP client:
+3. Send a DNS request using curl or any HTTP client:
 ```
   curl -X POST -H "Content-Type: application/json" -d '{
     "x": "123.12",
